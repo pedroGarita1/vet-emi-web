@@ -2,13 +2,18 @@
 
 use App\Http\Controllers\Web\ValidateController;
 use App\Http\Controllers\Web\VistasController;
+use App\Http\Controllers\Web\ConsultasController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [VistasController::class, 'login'])->name('login');
     Route::post('/login', [ValidateController::class, 'login'])->name('login.submit');
+
+    Route::get('/register', [VistasController::class, 'register'])->name('register');
+    Route::post('/register', [ValidateController::class, 'register'])->name('register.submit');
 });
 
 Route::middleware('auth')->group(function () {
@@ -27,9 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/sales/{sale}', [ValidateController::class, 'updateSale'])->name('sales-actualizar');
     Route::delete('/sales/{sale}', [ValidateController::class, 'destroySale'])->name('sales-eliminar');
 
-    Route::post('/consultations', [ValidateController::class, 'storeConsultation'])->name('consultations-agregar');
-    Route::put('/consultations/{consultation}', [ValidateController::class, 'updateConsultation'])->name('consultations-actualizar');
-    Route::delete('/consultations/{consultation}', [ValidateController::class, 'destroyConsultation'])->name('consultations-eliminar');
+
+    // Modularización: lógica de consultas a ConsultasController
+    Route::post('/consultations', [ConsultasController::class, 'store'])->name('consultations-agregar');
+    Route::put('/consultations/{consultation}', [ConsultasController::class, 'update'])->name('consultations-actualizar');
+    Route::delete('/consultations/{consultation}', [ConsultasController::class, 'destroy'])->name('consultations-eliminar');
+    Route::post('/consultations/{consultation}/images', [ConsultasController::class, 'addImages'])->name('consultations-add-images');
+    Route::get('/consultations/{consultation}/edit', [ConsultasController::class, 'edit'])->name('consultations-editar');
     Route::get('/consultations/{consultation}/prescription-pdf', [ValidateController::class, 'downloadConsultationPrescriptionPdf'])->name('consultations-receta-pdf');
 
     Route::post('/consultations/species', [ValidateController::class, 'storeSpecies'])->name('consultations-especie-agregar');

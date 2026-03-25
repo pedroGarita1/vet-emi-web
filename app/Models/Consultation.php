@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Consultation extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'species_id',
         'pet_id',
@@ -40,5 +42,9 @@ class Consultation extends Model
     public function consultationItems(): HasMany
     {
         return $this->hasMany(ConsultationItem::class);
+    }
+    public function images(): HasMany
+    {
+        return $this->hasMany(ConsultationImage::class);
     }
 }

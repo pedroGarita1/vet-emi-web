@@ -14,9 +14,9 @@ return new class extends Migration
         $now = now();
 
         $users = [
-            ['name' => 'Usuario Demo Emi', 'email' => 'demo@emi.com', 'password' => 'EmiVet123*'],
-            ['name' => 'Dra. Laura Medina', 'email' => 'laura.medina@emi.com', 'password' => 'EmiVet123*'],
-            ['name' => 'Recepcion Emi', 'email' => 'recepcion@emi.com', 'password' => 'EmiVet123*'],
+            ['name' => 'Usuario Demo Emi', 'email' => 'demo@emi.com', 'password' => 'admin1234'],
+            ['name' => 'Dra. Laura Medina', 'email' => 'laura.medina@emi.com', 'password' => 'admin1234'],
+            ['name' => 'Recepcion Emi', 'email' => 'recepcion@emi.com', 'password' => 'admin1234'],
         ];
 
         foreach ($users as $user) {

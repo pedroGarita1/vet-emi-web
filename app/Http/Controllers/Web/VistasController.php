@@ -9,11 +9,21 @@ use App\Models\InventoryItem;
 use App\Models\Pet;
 use App\Models\Sale;
 use App\Models\Species;
+
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class VistasController extends Controller
 {
+    public function register(): View
+    {
+        $roles = Role::query()->orderBy('name')->get();
+        return view('auth.register', [
+            'roles' => $roles,
+        ]);
+    }
+
     public function login(): View
     {
         return view('auth.login');

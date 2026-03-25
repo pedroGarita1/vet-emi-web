@@ -16,9 +16,36 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Role;
+
+use Illuminate\Support\Facades\Hash;
 
 class ValidateController extends Controller
 {
+    public function register(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id' => ['required', 'integer', 'exists:roles,id'],
+        ]);
+
+        $role = Role::findOrFail($data['role_id']);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'role_id' => $role->id,
+        ]);
+
+        // Aquí podrías marcar el usuario como pendiente de aprobación si lo deseas
+
+        return redirect()->route('login')->with('success', 'Registro enviado. Un administrador debe aprobar tu cuenta.');
+    }
+
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
@@ -297,28 +324,28 @@ class ValidateController extends Controller
         return redirect()->route('consultations-listar')->with('success', 'Especie agregada al catálogo.');
     }
 
-    public function storePet(Request $request): RedirectResponse
+    public function register(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'owner_name' => ['nullable', 'string', 'max:255'],
-            'species_id' => ['required', 'integer', 'exists:species,id'],
-            'breed' => ['nullable', 'string', 'max:120'],
-            'size_category' => ['nullable', 'in:pequena,mediana,grande'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id' => ['required', 'integer', 'exists:roles,id'],
         ]);
 
-        $species = Species::query()->findOrFail((int) $data['species_id']);
-        $speciesName = mb_strtolower(trim($species->name));
-        $requiresBreed = str_contains($speciesName, 'canino') || str_contains($speciesName, 'perro') || str_contains($speciesName, 'ave');
-        $requiresSize = str_contains($speciesName, 'canino')
-            || str_contains($speciesName, 'perro')
-            || str_contains($speciesName, 'felino')
-            || str_contains($speciesName, 'gato');
+        $role = Role::findOrFail($data['role_id']);
 
-        if ($requiresBreed && empty(trim((string) ($data['breed'] ?? '')))) {
-            return back()->withInput()->withErrors([
-                'breed' => 'El tipo es obligatorio para especies caninas o aves.',
-            ]);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'role_id' => $role->id,
+        ]);
+
+        // Aquí podrías marcar el usuario como pendiente de aprobación si lo deseas
+
+        return redirect()->route('login')->with('success', 'Registro enviado. Un administrador debe aprobar tu cuenta.');
+    }
         }
 
         if ($requiresSize && empty($data['size_category'])) {

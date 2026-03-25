@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'demo@emi.com'],
             [
                 'name' => 'Usuario Demo Emi',
-                'password' => Hash::make('EmiVet123*'),
+                'password' => Hash::make('admin1234'),
             ]
         );
 
@@ -92,5 +92,6 @@ class DatabaseSeeder extends Seeder
                 'consulted_at' => now()->subDay(),
             ]
         );
+        $this->call(RoleSeeder::class);
     }
 }
