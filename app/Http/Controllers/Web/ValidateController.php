@@ -323,34 +323,21 @@ class ValidateController extends Controller
 
         return redirect()->route('consultations-listar')->with('success', 'Especie agregada al catálogo.');
     }
-
-    public function register(Request $request): RedirectResponse
+    public function storePet(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role_id' => ['required', 'integer', 'exists:roles,id'],
+            'owner_name' => ['nullable', 'string', 'max:255'],
+            'breed' => ['nullable', 'string', 'max:255'],
+            'size_category' => ['nullable', 'string', 'max:50'],
+            'species_id' => ['required', 'integer', 'exists:species,id'],
         ]);
 
-        $role = Role::findOrFail($data['role_id']);
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id' => $role->id,
-        ]);
-
-        // Aquí podrías marcar el usuario como pendiente de aprobación si lo deseas
-
-        return redirect()->route('login')->with('success', 'Registro enviado. Un administrador debe aprobar tu cuenta.');
-    }
-        }
+        $requiresSize = in_array((int)$data['species_id'], [1, 2]); // ejemplo: perro/gato
 
         if ($requiresSize && empty($data['size_category'])) {
             return back()->withInput()->withErrors([
-                'size_category' => 'Selecciona talla pequena, mediana o grande para caninos/felinos.',
+                'size_category' => 'Selecciona talla pequeña, mediana o grande.',
             ]);
         }
 
@@ -363,7 +350,8 @@ class ValidateController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()->route('consultations-listar')->with('success', 'Mascota agregada al catálogo.');
+        return redirect()->route('consultations-listar')
+            ->with('success', 'Mascota agregada al catálogo.');
     }
 
     public function storeConsultationPricingRule(Request $request): RedirectResponse
