@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Tipo</label>
-                                    <input class="form-control" id="new_pet_breed" readonly placeholder="Se autocompleta">
+                                    <input class="form-control" id="new_pet_breed" placeholder="Se autocompleta o captura manualmente">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Propietario</label>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Talla</label>
-                                    <input class="form-control" id="new_pet_size" readonly placeholder="Pequena / Mediana / Grande">
+                                    <input class="form-control" id="new_pet_size" placeholder="Pequena / Mediana / Grande">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Fecha y hora</label>

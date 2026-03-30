@@ -8,4 +8,44 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-vet-bg: #f2f0f7;
+    --color-vet-surface: #fbfafc;
+    --color-vet-border: #dad6e3;
+    --color-vet-text: #252332;
+    --color-vet-muted: #6f6a80;
+    --color-vet-primary: #8b78b9;
+    --color-vet-primary-dark: #5d4a82;
+    --color-vet-soft: #efeafb;
+}
+
+:root {
+    --vet-bg: #f2f0f7;
+    --vet-surface: #fbfafc;
+    --vet-border: #dad6e3;
+    --vet-text: #252332;
+    --vet-muted: #6f6a80;
+    --vet-primary: #8b78b9;
+    --vet-primary-dark: #5d4a82;
+    --vet-soft: #efeafb;
+}
+
+body {
+    background: var(--vet-bg);
+    color: var(--vet-text);
+}
+
+.vet-surface {
+    background: var(--vet-surface);
+    border: 1px solid var(--vet-border);
+    border-radius: 14px;
+}
+
+.vet-button {
+    background: var(--vet-primary);
+    color: #ffffff;
+}
+
+.vet-button:hover {
+    background: var(--vet-primary-dark);
 }

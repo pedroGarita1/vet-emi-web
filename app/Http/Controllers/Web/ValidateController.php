@@ -382,9 +382,9 @@ class ValidateController extends Controller
 
         $pdf = Pdf::loadView('modules.consultations.prescription-pdf', [
             'consultation' => $consultation,
-        ]);
+        ])->setPaper('letter', 'landscape');
 
-        return $pdf->download('receta-consulta-'.$consultation->id.'.pdf');
+        return $pdf->stream('receta-consulta-'.$consultation->id.'.pdf');
     }
 
     private function resolveConsultationCost(int $speciesId, string $diagnosis, mixed $inputCost): float

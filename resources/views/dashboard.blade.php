@@ -14,35 +14,56 @@
                 <p class="mb-0">Sede activa: <strong>{{ $selectedSede }}</strong></p>
             </div>
             <div class="d-flex gap-2">
-                <span class="emi-badge"><i class="fa-solid fa-boxes-stacked me-1"></i> Inventario</span>
+                @if($isAdmin)
+                    <span class="emi-badge"><i class="fa-solid fa-boxes-stacked me-1"></i> Inventario</span>
+                @endif
                 <span class="emi-badge"><i class="fa-solid fa-cash-register me-1"></i> POS</span>
                 <span class="emi-badge"><i class="fa-solid fa-stethoscope me-1"></i> Consultas</span>
+                @if($isAdmin)
+                    <span class="emi-badge"><i class="fa-solid fa-users me-1"></i> Empleados</span>
+                @endif
             </div>
         </div>
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-md-6 col-xl-4">
-            <div class="kpi-card kpi-blue h-100">
-                <div class="fw-bold text-uppercase small text-muted">Sede</div>
-                <div class="h4 fw-bold mb-1">{{ $selectedSede }}</div>
-                <div class="small text-muted">Operación activa</div>
+        @if($isAdmin)
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="kpi-card kpi-blue h-100">
+                    <div class="fw-bold text-uppercase small text-muted">Sede</div>
+                    <div class="h4 fw-bold mb-1">{{ $selectedSede }}</div>
+                    <div class="small text-muted">Operación activa</div>
+                </div>
             </div>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4">
-            <div class="kpi-card kpi-green h-100">
-                <div class="fw-bold text-uppercase small text-muted">Sesión</div>
-                <div class="h4 fw-bold mb-1">Autenticada</div>
-                <div class="small text-muted">Con Sanctum y API</div>
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="kpi-card kpi-green h-100">
+                    <div class="fw-bold text-uppercase small text-muted">Sesión</div>
+                    <div class="h4 fw-bold mb-1">Autenticada</div>
+                    <div class="small text-muted">Con Sanctum y API</div>
+                </div>
             </div>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4">
-            <div class="kpi-card h-100" style="background:linear-gradient(135deg,#fff7ed,#ffedd5)">
-                <div class="fw-bold text-uppercase small text-muted">Cobertura</div>
-                <div class="h4 fw-bold mb-1">3 módulos</div>
-                <div class="small text-muted">Inventario, POS y Consultas</div>
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="kpi-card kpi-warm h-100">
+                    <div class="fw-bold text-uppercase small text-muted">Cobertura</div>
+                    <div class="h4 fw-bold mb-1">4 módulos</div>
+                    <div class="small text-muted">Inventario, POS, Consultas y Empleados</div>
+                </div>
             </div>
-        </div>
+        @else
+            <div class="col-12">
+                <div class="kpi-card kpi-blue" style="background:linear-gradient(135deg,#f0edf9,#e4dff0)">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--emi-primary),var(--emi-primary-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">
+                            <i class="fa-solid fa-user-nurse"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="color:var(--emi-dark)">Bienvenido, {{ $user->name }}</div>
+                            <div class="small text-muted">Tienes acceso a Consultas y Punto de Venta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
     <div class="module-panel mb-4">
@@ -52,29 +73,31 @@
         </div>
         <div class="row g-3">
             <div class="col-12 col-md-6 col-xl-3">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#eff6ff,#dbeafe)">
-                    <div class="fw-bold text-uppercase small text-muted">Atenciones hoy</div>
+                <div class="kpi-card kpi-blue h-100">
+                    <div class="fw-bold text-uppercase small text-muted">{{ $isAdmin ? 'Atenciones hoy' : 'Mis consultas hoy' }}</div>
                     <div class="h4 fw-bold mb-0">{{ $todayConsultations }}</div>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-xl-3">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)">
-                    <div class="fw-bold text-uppercase small text-muted">Atenciones mes</div>
+                <div class="kpi-card kpi-green h-100">
+                    <div class="fw-bold text-uppercase small text-muted">{{ $isAdmin ? 'Atenciones mes' : 'Mis consultas del mes' }}</div>
                     <div class="h4 fw-bold mb-0">{{ $monthConsultations }}</div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#fff7ed,#ffedd5)">
-                    <div class="fw-bold text-uppercase small text-muted">Ingreso mes</div>
-                    <div class="h4 fw-bold mb-0">${{ number_format($monthRevenue, 2) }}</div>
+            @if($isAdmin)
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="kpi-card kpi-warm h-100">
+                        <div class="fw-bold text-uppercase small text-muted">Ingreso mes</div>
+                        <div class="h4 fw-bold mb-0">${{ number_format($monthRevenue, 2) }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#fdf2f8,#fce7f3)">
-                    <div class="fw-bold text-uppercase small text-muted">Promedio consulta</div>
-                    <div class="h4 fw-bold mb-0">${{ number_format($avgConsultationCost, 2) }}</div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="kpi-card kpi-soft h-100">
+                        <div class="fw-bold text-uppercase small text-muted">Promedio consulta</div>
+                        <div class="h4 fw-bold mb-0">${{ number_format($avgConsultationCost, 2) }}</div>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -85,38 +108,42 @@
         </div>
         <div class="row g-3">
             <div class="col-12 col-md-6 col-xl-4">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#eff6ff,#dbeafe)">
-                    <div class="fw-bold text-uppercase small text-muted">Ventas hoy</div>
+                <div class="kpi-card kpi-blue h-100">
+                    <div class="fw-bold text-uppercase small text-muted">{{ $isAdmin ? 'Ventas hoy' : 'Mis ventas hoy' }}</div>
                     <div class="h4 fw-bold mb-0">{{ $todaySales }}</div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-xl-4">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)">
-                    <div class="fw-bold text-uppercase small text-muted">Ingreso hoy</div>
-                    <div class="h4 fw-bold mb-0">${{ number_format($todaySalesRevenue, 2) }}</div>
+            @if($isAdmin)
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="kpi-card kpi-green h-100">
+                        <div class="fw-bold text-uppercase small text-muted">Ingreso hoy</div>
+                        <div class="h4 fw-bold mb-0">${{ number_format($todaySalesRevenue, 2) }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 col-xl-4">
-                <div class="kpi-card h-100" style="background:linear-gradient(135deg,#fff7ed,#ffedd5)">
-                    <div class="fw-bold text-uppercase small text-muted">Ingreso mensual</div>
-                    <div class="h4 fw-bold mb-0">${{ number_format($monthSalesRevenue, 2) }}</div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="kpi-card kpi-warm h-100">
+                        <div class="fw-bold text-uppercase small text-muted">Ingreso mensual</div>
+                        <div class="h4 fw-bold mb-0">${{ number_format($monthSalesRevenue, 2) }}</div>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
     <div class="row g-3 g-md-4">
-        <div class="col-12 col-md-6 col-xl-4">
-            <div class="emi-card bg-white p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h5 mb-0">Inventario</h2>
-                    <i class="fa-solid fa-boxes-stacked text-success fs-4"></i>
+        @if($isAdmin)
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="emi-card bg-white p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 mb-0">Inventario</h2>
+                        <i class="fa-solid fa-boxes-stacked text-success fs-4"></i>
+                    </div>
+                    <p class="text-muted mb-0">Control de stock de medicamentos, alimento y accesorios.</p>
+                    <a href="{{ route('inventario-listar') }}" class="btn btn-sm btn-outline-success mt-3">Abrir módulo</a>
                 </div>
-                <p class="text-muted mb-0">Control de stock de medicamentos, alimento y accesorios para mascotas.</p>
-                <a href="{{ route('inventario-listar') }}" class="btn btn-sm btn-outline-success mt-3">Abrir modulo</a>
             </div>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4">
+        @endif
+        <div class="{{ $isAdmin ? 'col-12 col-md-6 col-xl-3' : 'col-12 col-md-6' }}">
             <div class="emi-card bg-white p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="h5 mb-0">Punto de Venta</h2>
@@ -126,7 +153,7 @@
                 <a href="{{ route('sales-listar') }}" class="btn btn-sm btn-outline-warning mt-3">Abrir modulo</a>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-xl-4">
+        <div class="{{ $isAdmin ? 'col-12 col-md-6 col-xl-3' : 'col-12 col-md-6' }}">
             <div class="emi-card bg-white p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="h5 mb-0">Consultas</h2>
@@ -136,6 +163,18 @@
                 <a href="{{ route('consultations-listar') }}" class="btn btn-sm btn-outline-primary mt-3">Abrir modulo</a>
             </div>
         </div>
+        @if($isAdmin)
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="emi-card bg-white p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 mb-0">Empleados</h2>
+                        <i class="fa-solid fa-users text-primary fs-4"></i>
+                    </div>
+                    <p class="text-muted mb-0">Gestiona el personal de la clínica, documentos y datos de contacto.</p>
+                    <a href="{{ route('employees-listar') }}" class="btn btn-sm btn-outline-primary mt-3">Abrir módulo</a>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

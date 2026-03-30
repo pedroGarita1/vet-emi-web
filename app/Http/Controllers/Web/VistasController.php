@@ -31,19 +31,32 @@ class VistasController extends Controller
 
     public function dashboard(Request $request): View
     {
-        $consultations = Consultation::query()->latest('consulted_at')->get();
-        $sales = Sale::query()->latest('sold_at')->get();
+        $user = $request->user();
+        $isAdmin = $user->isAdmin();
+
+        // Admin ve todos los datos; empleado solo ve sus propios registros del día
+        $consultationsQuery = Consultation::query()->latest('consulted_at');
+        $salesQuery         = Sale::query()->latest('sold_at');
+
+        if (! $isAdmin) {
+            $consultationsQuery->where('user_id', $user->id);
+            $salesQuery->where('user_id', $user->id);
+        }
+
+        $consultations = $consultationsQuery->get();
+        $sales         = $salesQuery->get();
 
         return view('dashboard', [
-            'user' => $request->user(),
-            'selectedSede' => session('selected_sede', 'Matriz'),
-            'todayConsultations' => $consultations->filter(fn ($item) => $item->consulted_at && $item->consulted_at->isToday())->count(),
-            'monthConsultations' => $consultations->filter(fn ($item) => $item->consulted_at && $item->consulted_at->isCurrentMonth())->count(),
-            'monthRevenue' => (float) $consultations->filter(fn ($item) => $item->consulted_at && $item->consulted_at->isCurrentMonth())->sum('cost'),
-            'avgConsultationCost' => (float) ($consultations->count() > 0 ? $consultations->avg('cost') : 0),
-            'todaySales' => $sales->filter(fn ($item) => $item->sold_at && $item->sold_at->isToday())->count(),
-            'todaySalesRevenue' => (float) $sales->filter(fn ($item) => $item->sold_at && $item->sold_at->isToday())->sum('total'),
-            'monthSalesRevenue' => (float) $sales->filter(fn ($item) => $item->sold_at && $item->sold_at->isCurrentMonth())->sum('total'),
+            'user'                 => $user,
+            'isAdmin'              => $isAdmin,
+            'selectedSede'         => session('selected_sede', 'Matriz'),
+            'todayConsultations'   => $consultations->filter(fn ($c) => $c->consulted_at?->isToday())->count(),
+            'monthConsultations'   => $consultations->filter(fn ($c) => $c->consulted_at?->isCurrentMonth())->count(),
+            'monthRevenue'         => $isAdmin ? (float) $consultations->filter(fn ($c) => $c->consulted_at?->isCurrentMonth())->sum('cost') : null,
+            'avgConsultationCost'  => $isAdmin ? (float) ($consultations->count() > 0 ? $consultations->avg('cost') : 0) : null,
+            'todaySales'           => $sales->filter(fn ($s) => $s->sold_at?->isToday())->count(),
+            'todaySalesRevenue'    => $isAdmin ? (float) $sales->filter(fn ($s) => $s->sold_at?->isToday())->sum('total') : null,
+            'monthSalesRevenue'    => $isAdmin ? (float) $sales->filter(fn ($s) => $s->sold_at?->isCurrentMonth())->sum('total') : null,
         ]);
     }
 

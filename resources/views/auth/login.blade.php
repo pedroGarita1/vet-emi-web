@@ -8,9 +8,9 @@
         <div class="col-12 col-md-11 col-lg-10">
             <div class="emi-card overflow-hidden">
                 <div class="row g-0">
-                    <div class="col-lg-5 text-white p-4 p-lg-5 d-flex flex-column justify-content-between position-relative" style="background:linear-gradient(135deg,#27c27c,#1a9e63)">
-                        <div class="position-absolute top-0 start-0 rounded-circle" style="width:220px;height:220px;background:#6ee7b7;opacity:.25;transform:translate(-30%,-30%);"></div>
-                        <div class="position-absolute bottom-0 end-0 rounded-circle" style="width:220px;height:220px;background:#34d399;opacity:.2;transform:translate(30%,30%);"></div>
+                    <div class="col-lg-5 text-white p-4 p-lg-5 d-flex flex-column justify-content-between position-relative" style="background:linear-gradient(135deg,#242033,#5d4a82)">
+                        <div class="position-absolute top-0 start-0 rounded-circle" style="width:220px;height:220px;background:#9d8bc6;opacity:.24;transform:translate(-30%,-30%);"></div>
+                        <div class="position-absolute bottom-0 end-0 rounded-circle" style="width:220px;height:220px;background:#7d69ae;opacity:.2;transform:translate(30%,30%);"></div>
                         <div class="position-relative">
                             <span class="emi-badge mb-3 d-inline-block">Emi Veterinaria</span>
                             <h1 class="h3 fw-bold mb-3">Gestión Integral</h1>

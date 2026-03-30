@@ -11,12 +11,12 @@
 
     .pos-hero {
         background:
-            radial-gradient(circle at 12% 15%, #a995cf 0%, #8b78b9 42%, #5d4a82 100%),
-            linear-gradient(135deg, #3a334d 0%, #2a233d 100%);
+            radial-gradient(circle at 12% 15%, #f4b860 0%, #e89a3a 42%, #d67c1f 100%),
+            linear-gradient(135deg, #8b5a2b 0%, #6b4426 100%);
         color: #fff;
         border-radius: 20px;
         padding: 1.5rem;
-        box-shadow: 0 20px 40px rgba(93, 74, 130, 0.28);
+        box-shadow: 0 20px 40px rgba(139, 90, 43, 0.28);
     }
 
     .pos-hero-note {
@@ -33,15 +33,15 @@
         border-radius: 16px;
         padding: 1.1rem;
         color: #fff;
-        background: linear-gradient(135deg, #8b78b9 0%, #5d4a82 55%, #4a3d66 100%);
-        box-shadow: 0 18px 28px rgba(93, 74, 130, 0.28);
+        background: linear-gradient(135deg, #e89a3a 0%, #d67c1f 55%, #b85c13 100%);
+        box-shadow: 0 18px 28px rgba(186, 124, 31, 0.32);
         cursor: pointer;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .pos-primary-trigger:hover {
         transform: translateY(-2px);
-        box-shadow: 0 22px 32px rgba(93, 74, 130, 0.35);
+        box-shadow: 0 22px 32px rgba(186, 124, 31, 0.4);
     }
 
     .pos-primary-trigger strong {
@@ -70,7 +70,7 @@
         font-weight: 800;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: var(--emi-primary);
+        color: #d67c1f;
     }
 
     .pos-card {
@@ -84,7 +84,7 @@
     .pos-card-head {
         padding: 1rem;
         border-bottom: 1px solid var(--emi-border);
-        background: linear-gradient(90deg, #f8f7fb 0%, #f4f1fb 100%);
+        background: linear-gradient(90deg, #fff9f4 0%, #fef5f0 100%);
     }
 
     .pos-card-body {
@@ -97,17 +97,17 @@
     }
 
     .pos-table thead th {
-        background: #f8f7fb;
-        border-bottom: 2px solid var(--emi-border);
+        background: #fff9f4;
+        border-bottom: 2px solid #e5ddd0;
         font-size: 0.78rem;
         text-transform: uppercase;
         letter-spacing: 0.03em;
-        color: var(--emi-muted);
+        color: #8b5a2b;
         font-weight: 800;
     }
 
     .pos-table tbody tr:hover {
-        background: #f8f7fb;
+        background: #fef8f3;
     }
 
     .pos-badge {
@@ -117,13 +117,13 @@
         padding: 4px 12px;
         font-size: 0.75rem;
         font-weight: 700;
-        background: #f4f1fb;
-        color: #5d4a82;
-        border: 1px solid #d9cfe8;
+        background: #fff4e6;
+        color: #d67c1f;
+        border: 1px solid #e5b8a0;
     }
 
     .pos-action-btn {
-        background: linear-gradient(135deg, #8b78b9 0%, #5d4a82 100%);
+        background: linear-gradient(135deg, #e89a3a 0%, #d67c1f 100%);
         color: white;
         border: 0;
         border-radius: 8px;
@@ -137,13 +137,13 @@
 
     /* Modal styling */
     .pos-modal-header {
-        background: linear-gradient(135deg, #8b78b9 0%, #5d4a82 100%);
+        background: linear-gradient(135deg, #f4b860 0%, #e89a3a 100%);
         color: white;
         border: 0;
     }
 
     .pos-modal-body {
-        background: var(--emi-surface);
+        background: #fefaf6;
     }
 </style>
 

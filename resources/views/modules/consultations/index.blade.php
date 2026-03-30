@@ -15,18 +15,18 @@
     }
 
     .consult-hero {
-        background: radial-gradient(circle at 10% 10%, #34d399 0%, #059669 45%, #065f46 100%);
+        background: radial-gradient(circle at 10% 10%, #a995cf 0%, #5d4a82 45%, #3d3456 100%);
         border-radius: 18px;
         color: #fff;
         padding: 1.2rem;
-        box-shadow: 0 14px 30px rgba(6, 95, 70, 0.35);
+        box-shadow: 0 14px 30px rgba(93, 74, 130, 0.35);
     }
 
     .consult-table-panel {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: var(--emi-surface);
+        border: 1px solid var(--emi-border);
         border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 8px 24px rgba(37, 35, 50, 0.08);
         overflow: hidden;
     }
 
@@ -43,16 +43,16 @@
 
     .consult-primary-action,
     .consult-secondary-actions {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: var(--emi-surface);
+        border: 1px solid var(--emi-border);
         border-radius: 18px;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 8px 24px rgba(37, 35, 50, 0.08);
     }
 
     .consult-primary-action {
         padding: 1.1rem;
-        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 55%, #ffffff 100%);
-        border-color: #a7f3d0;
+        background: linear-gradient(135deg, #f4f1fb 0%, #e8dff5 55%, var(--emi-surface) 100%);
+        border-color: #d9cfe8;
     }
 
     .consult-primary-trigger {
@@ -65,8 +65,8 @@
         border-radius: 16px;
         padding: 1rem 1.1rem;
         color: #fff;
-        background: linear-gradient(135deg, #10b981 0%, #059669 55%, #047857 100%);
-        box-shadow: 0 18px 28px rgba(5, 150, 105, 0.25);
+        background: linear-gradient(135deg, #8b78b9 0%, #5d4a82 55%, #4a3d66 100%);
+        box-shadow: 0 18px 28px rgba(93, 74, 130, 0.28);
     }
 
     .consult-primary-trigger strong {
@@ -112,19 +112,19 @@
         text-align: left;
         border-radius: 14px;
         padding: 0.85rem;
-        border: 1px solid #dbeafe;
-        background: #f8fafc;
-        color: #0f172a;
+        border: 1px solid #d9cfe8;
+        background: #f8f7fb;
+        color: #252332;
     }
 
     .consult-secondary-trigger i {
-        color: #0f766e;
+        color: #5d4a82;
         margin-right: 0.45rem;
     }
 
     .consult-secondary-trigger small {
         display: block;
-        color: #64748b;
+        color: #6f6a80;
         margin-top: 0.2rem;
     }
 
@@ -149,8 +149,8 @@
     }
 
     .table-filter-wrap {
-        background: #f8fafc;
-        border: 1px dashed #cbd5e1;
+        background: #f8f7fb;
+        border: 1px dashed #d9cfe8;
         border-radius: 12px;
         padding: 0.85rem;
         margin-bottom: 0.8rem;
@@ -159,33 +159,33 @@
     .table-consult thead th {
         position: sticky;
         top: 0;
-        background: #f8fafc;
+        background: #f8f7fb;
         z-index: 1;
     }
 
     .med-row {
-        border: 1px dashed #cbd5e1;
+        border: 1px dashed #d9cfe8;
         border-radius: 10px;
         padding: 0.65rem;
-        background: #f8fafc;
+        background: #f8f7fb;
     }
 
     .med-chip {
         display: inline-block;
-        border: 1px solid #d1d5db;
+        border: 1px solid #d9cfe8;
         border-radius: 999px;
         padding: 2px 10px;
         font-size: 0.72rem;
         margin: 2px 4px 2px 0;
-        background: #f9fafb;
+        background: #f4f1fb;
     }
 
     .breed-pill {
         display: inline-flex;
         align-items: center;
-        border: 1px solid #a7f3d0;
-        background: #ecfdf5;
-        color: #065f46;
+        border: 1px solid #d9cfe8;
+        background: #f4f1fb;
+        color: #3a334d;
         font-size: 0.72rem;
         border-radius: 999px;
         padding: 2px 10px;
@@ -195,9 +195,9 @@
     .size-pill {
         display: inline-flex;
         align-items: center;
-        border: 1px solid #bfdbfe;
-        background: #eff6ff;
-        color: #1d4ed8;
+        border: 1px solid #d9cfe8;
+        background: #f8f7fb;
+        color: #5d4a82;
         font-size: 0.72rem;
         border-radius: 999px;
         padding: 2px 10px;
@@ -226,19 +226,20 @@
     .consult-create-modal .modal-content {
         border-radius: 24px;
         overflow: hidden;
+        border: 1px solid var(--emi-border);
     }
 
     .consult-create-modal .modal-header {
         padding: 1.15rem 1.25rem;
-        background: linear-gradient(135deg, #e8fff5 0%, #d7f7ea 52%, #c3ecdb 100%);
-        border-bottom: 1px solid #b7e4d2;
+        background: linear-gradient(135deg, #f4f1fb 0%, #eae1f5 52%, #dfd4ed 100%);
+        border-bottom: 1px solid #d9cfe8;
     }
 
     .consult-create-modal .modal-body {
         padding: 1.25rem;
         background:
-            radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 22%),
-            linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            radial-gradient(circle at top right, rgba(139, 120, 185, 0.08), transparent 22%),
+            linear-gradient(180deg, #f8f7fb 0%, var(--emi-surface) 100%);
     }
 
     .consult-create-shell {
@@ -254,16 +255,16 @@
     }
 
     .consult-create-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: var(--emi-surface);
+        border: 1px solid var(--emi-border);
         border-radius: 20px;
         padding: 1rem;
-        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 32px rgba(37, 35, 50, 0.08);
     }
 
     .consult-create-card-soft {
-        background: linear-gradient(180deg, #ffffff 0%, #fbfffd 100%);
-        border-color: #d1fae5;
+        background: linear-gradient(180deg, var(--emi-surface) 0%, #fbfaf9 100%);
+        border-color: #d9cfe8;
     }
 
     .consult-create-head {
@@ -279,25 +280,25 @@
         align-items: center;
         gap: 0.55rem;
         font-weight: 800;
-        color: #064e3b;
+        color: #3a334d;
         letter-spacing: 0.03em;
         text-transform: uppercase;
         font-size: 0.78rem;
     }
 
     .consult-create-title i {
-        color: #059669;
+        color: #5d4a82;
     }
 
     .consult-create-head p {
         margin: 0.2rem 0 0;
-        color: #64748b;
+        color: #6f6a80;
         font-size: 0.88rem;
     }
 
     .consult-treatment-card {
         min-height: 100%;
-        background: linear-gradient(180deg, #ffffff 0%, #f7fffb 100%);
+        background: linear-gradient(180deg, var(--emi-surface) 0%, #faf9fc 100%);
     }
 
     .consult-treatment-card .form-label,
@@ -604,7 +605,7 @@
                 }).join('');
             }
 
-            function initializeSelect2ForElement(element) {
+            function initializeSelect2ForElement(element, dropdownParentElement) {
                 if (!element || !window.jQuery || !window.jQuery.fn.select2) {
                     return;
                 }
@@ -617,24 +618,28 @@
 
                 $element.select2({
                     width: '100%',
-                    dropdownParent: window.jQuery(consultationModal),
+                    dropdownParent: window.jQuery(dropdownParentElement || consultationModal || document.body),
                     placeholder: element.getAttribute('data-placeholder') || 'Selecciona una opcion',
                     allowClear: true,
                 });
             }
 
-            function initializeConsultationSelect2(scope) {
+            function initializeConsultationSelect2(scope, dropdownParentElement) {
                 if (!scope) {
                     return;
                 }
 
                 scope.querySelectorAll('.consultation-select2').forEach(function (element) {
-                    initializeSelect2ForElement(element);
+                    initializeSelect2ForElement(element, dropdownParentElement);
                 });
             }
 
-            function refreshMedicationIndexes() {
-                const rows = medicationsContainer.querySelectorAll('.med-row');
+            function refreshMedicationIndexes(targetContainer) {
+                if (!targetContainer) {
+                    return;
+                }
+
+                const rows = targetContainer.querySelectorAll('.med-row');
                 rows.forEach(function (row, index) {
                     row.querySelectorAll('[data-field]').forEach(function (field) {
                         field.name = `medications[${index}][${field.getAttribute('data-field')}]`;
@@ -642,7 +647,37 @@
                 });
             }
 
-            function addMedicationRow() {
+            function getNextMedicationIndex(targetContainer) {
+                let maxIndex = -1;
+
+                if (!targetContainer) {
+                    return 0;
+                }
+
+                targetContainer.querySelectorAll('[name^="medications["]').forEach(function (field) {
+                    const match = String(field.name || '').match(/medications\[(\d+)\]/);
+                    if (match) {
+                        maxIndex = Math.max(maxIndex, Number(match[1]));
+                    }
+                });
+
+                return maxIndex + 1;
+            }
+
+            function assignMedicationNames(row, index) {
+                row.querySelectorAll('[data-field]').forEach(function (field) {
+                    field.name = `medications[${index}][${field.getAttribute('data-field')}]`;
+                });
+            }
+
+            function addMedicationRow(targetContainer, dropdownParentElement, reindexRows) {
+                if (!targetContainer) {
+                    return;
+                }
+
+                const shouldReindex = reindexRows !== false;
+                const nextIndex = shouldReindex ? null : getNextMedicationIndex(targetContainer);
+
                 const wrapper = document.createElement('div');
                 wrapper.className = 'med-row';
                 wrapper.innerHTML = `
@@ -687,11 +722,15 @@
                     </div>
                 `;
 
-                medicationsContainer.appendChild(wrapper);
-                refreshMedicationIndexes();
+                targetContainer.appendChild(wrapper);
+                if (shouldReindex) {
+                    refreshMedicationIndexes(targetContainer);
+                } else {
+                    assignMedicationNames(wrapper, nextIndex);
+                }
 
-                if (consultationModal && consultationModal.classList.contains('show')) {
-                    initializeConsultationSelect2(wrapper);
+                if (dropdownParentElement) {
+                    initializeConsultationSelect2(wrapper, dropdownParentElement);
                 }
 
                 const select = wrapper.querySelector('.med-item-select');
@@ -710,36 +749,51 @@
                     }
 
                     wrapper.remove();
-                    refreshMedicationIndexes();
+                    if (shouldReindex) {
+                        refreshMedicationIndexes(targetContainer);
+                    }
                 });
             }
 
-            if (petSelect) {
-                petSelect.addEventListener('change', function () {
-                    const pet = findPet(this.value);
-                    if (!pet) {
-                        ownerInput.value = '';
-                        breedInput.value = '';
-                        if (sizeInput) {
-                            sizeInput.value = '';
-                        }
-                        return;
-                    }
+            function applySelectedPetData() {
+                if (!petSelect) {
+                    return;
+                }
 
-                    if (pet.species_id) {
-                        speciesSelect.value = String(pet.species_id);
-                        if (window.jQuery && window.jQuery.fn.select2) {
-                            window.jQuery(speciesSelect).trigger('change');
-                        }
-                    }
-
-                    ownerInput.value = pet.owner_name || '';
-                    breedInput.value = pet.breed || '';
+                const pet = findPet(petSelect.value);
+                if (!pet) {
+                    ownerInput.value = '';
+                    breedInput.value = '';
                     if (sizeInput) {
-                        sizeInput.value = pet.size_category ? pet.size_category.charAt(0).toUpperCase() + pet.size_category.slice(1) : '';
+                        sizeInput.value = '';
                     }
-                    resolveCost();
-                });
+                    return;
+                }
+
+                if (pet.species_id && speciesSelect) {
+                    speciesSelect.value = String(pet.species_id);
+                    if (window.jQuery && window.jQuery.fn.select2) {
+                        window.jQuery(speciesSelect).trigger('change');
+                    }
+                }
+
+                ownerInput.value = pet.owner_name || ownerInput.value || '';
+                breedInput.value = pet.breed || breedInput.value || '';
+                if (sizeInput) {
+                    sizeInput.value = pet.size_category
+                        ? pet.size_category.charAt(0).toUpperCase() + pet.size_category.slice(1)
+                        : (sizeInput.value || '');
+                }
+
+                resolveCost();
+            }
+
+            if (petSelect) {
+                petSelect.addEventListener('change', applySelectedPetData);
+
+                if (window.jQuery && window.jQuery.fn.select2) {
+                    window.jQuery(petSelect).on('select2:select select2:clear', applySelectedPetData);
+                }
             }
 
             if (speciesSelect) {
@@ -757,13 +811,36 @@
             }
 
             if (addMedicationRowBtn) {
-                addMedicationRowBtn.addEventListener('click', addMedicationRow);
-                addMedicationRow();
+                addMedicationRowBtn.addEventListener('click', function () {
+                    addMedicationRow(medicationsContainer, consultationModal, true);
+                });
+                addMedicationRow(medicationsContainer, consultationModal, true);
             }
+
+            document.querySelectorAll('[id^="addMedicationRowBtnEdit-"]').forEach(function (button) {
+                const consultationId = button.id.replace('addMedicationRowBtnEdit-', '');
+                const editModal = document.getElementById(`modalEditConsultation-${consultationId}`);
+                const editContainer = document.getElementById(`medicationsContainerEdit-${consultationId}`);
+
+                if (!editContainer) {
+                    return;
+                }
+
+                button.addEventListener('click', function () {
+                    addMedicationRow(editContainer, editModal, false);
+                });
+
+                if (editModal) {
+                    editModal.addEventListener('shown.bs.modal', function () {
+                        initializeConsultationSelect2(editModal, editModal);
+                    });
+                }
+            });
 
             if (consultationModal) {
                 consultationModal.addEventListener('shown.bs.modal', function () {
-                    initializeConsultationSelect2(consultationModal);
+                    initializeConsultationSelect2(consultationModal, consultationModal);
+                    applySelectedPetData();
                 });
             }
 

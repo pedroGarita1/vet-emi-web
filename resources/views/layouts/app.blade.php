@@ -16,14 +16,16 @@
 
     <style>
         :root {
-            --emi-primary: #10b981;
-            --emi-primary-dark: #059669;
-            --emi-sidebar-dark: #022c22;
-            --emi-sidebar-mid: #064e3b;
-            --emi-sidebar-light: #047857;
-            --emi-bg: #f3f4f6;
-            --emi-dark: #1f2937;
-            --emi-border: #e5e7eb;
+            --emi-primary: #8b78b9;
+            --emi-primary-dark: #5d4a82;
+            --emi-sidebar-dark: #181623;
+            --emi-sidebar-mid: #242033;
+            --emi-sidebar-light: #322c45;
+            --emi-bg: #f2f0f7;
+            --emi-dark: #252332;
+            --emi-border: #dad6e3;
+            --emi-muted: #6f6a80;
+            --emi-surface: #fbfafc;
         }
 
         body {
@@ -36,8 +38,9 @@
         .emi-card {
             border: 1px solid var(--emi-border);
             border-radius: 16px;
-            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.07);
+            box-shadow: 0 10px 22px rgba(37, 35, 50, 0.08);
             overflow: hidden;
+            background: var(--emi-surface);
         }
 
         .app-shell {
@@ -80,7 +83,7 @@
             height: 38px;
             border: 0;
             border-radius: 10px;
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, var(--emi-primary), var(--emi-primary-dark));
             color: #fff;
             display: flex;
             align-items: center;
@@ -131,7 +134,7 @@
         }
 
         .sidebar-menu a.active {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, var(--emi-primary), var(--emi-primary-dark));
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
         }
 
@@ -182,11 +185,11 @@
         }
 
         .page-hero {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #2a253b, var(--emi-primary-dark));
             border-radius: 16px;
             color: #fff;
             padding: 1.25rem 1.4rem;
-            box-shadow: 0 10px 28px rgba(5, 150, 105, 0.25);
+            box-shadow: 0 10px 28px rgba(37, 35, 50, 0.28);
         }
 
         .kpi-card {
@@ -197,11 +200,19 @@
         }
 
         .kpi-blue {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            background: linear-gradient(135deg, #f4f2f9, #e4deef);
         }
 
         .kpi-green {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            background: linear-gradient(135deg, #f6f5f8, #ebe8f1);
+        }
+
+        .kpi-warm {
+            background: linear-gradient(135deg, #f3f0f8, #e8e1f3);
+        }
+
+        .kpi-soft {
+            background: linear-gradient(135deg, #f8f7fb, #ece9f4);
         }
 
         .table-modern {
@@ -230,15 +241,15 @@
         }
 
         .module-panel {
-            background: #fff;
+            background: var(--emi-surface);
             border: 1px solid var(--emi-border);
             border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 16px rgba(37, 35, 50, 0.08);
             padding: 1.2rem;
         }
 
         .emi-badge {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.18);
             color: #fff;
             border-radius: 999px;
             padding: 6px 12px;
@@ -246,9 +257,54 @@
             font-size: 0.8rem;
         }
 
+        .text-muted {
+            color: var(--emi-muted) !important;
+        }
+
+        .btn-success {
+            --bs-btn-bg: var(--emi-primary);
+            --bs-btn-border-color: var(--emi-primary);
+            --bs-btn-hover-bg: var(--emi-primary-dark);
+            --bs-btn-hover-border-color: var(--emi-primary-dark);
+            --bs-btn-active-bg: var(--emi-primary-dark);
+            --bs-btn-active-border-color: var(--emi-primary-dark);
+        }
+
+        .btn-outline-success,
+        .btn-outline-primary,
+        .btn-outline-warning {
+            --bs-btn-color: var(--emi-primary-dark);
+            --bs-btn-border-color: #b8aed0;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: var(--emi-primary);
+            --bs-btn-hover-border-color: var(--emi-primary);
+            --bs-btn-active-bg: var(--emi-primary-dark);
+            --bs-btn-active-border-color: var(--emi-primary-dark);
+            --bs-btn-disabled-color: #8e869f;
+            --bs-btn-disabled-border-color: #d4cede;
+        }
+
+        .text-success,
+        .text-primary,
+        .text-warning {
+            color: var(--emi-primary-dark) !important;
+        }
+
+        .form-control,
+        .form-select {
+            border-color: #cbc4d9;
+            background-color: #fff;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #b6aad1;
+            box-shadow: 0 0 0 0.2rem rgba(139, 120, 185, 0.2);
+        }
+
         .select2-container .select2-selection--single {
             height: 38px;
-            border: 1px solid #ced4da;
+            border: 1px solid #cbc4d9;
             border-radius: 0.375rem;
         }
 
@@ -295,12 +351,14 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('inventario-listar') }}" class="{{ request()->routeIs('inventario-*') ? 'active' : '' }}">
-                            <i class="fas fa-boxes-stacked"></i>
-                            <span>Inventario</span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->isAdmin())
+                        <li>
+                            <a href="{{ route('inventario-listar') }}" class="{{ request()->routeIs('inventario-*') ? 'active' : '' }}">
+                                <i class="fas fa-boxes-stacked"></i>
+                                <span>Inventario</span>
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('sales-listar') }}" class="{{ request()->routeIs('sales-*') ? 'active' : '' }}">
                             <i class="fas fa-cash-register"></i>
@@ -313,6 +371,14 @@
                             <span>Consultas</span>
                         </a>
                     </li>
+                    @if(auth()->user()->isAdmin())
+                        <li>
+                            <a href="{{ route('employees-listar') }}" class="{{ request()->routeIs('employees-*') ? 'active' : '' }}">
+                                <i class="fas fa-users"></i>
+                                <span>Empleados</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
 
                 <div class="sidebar-footer">
