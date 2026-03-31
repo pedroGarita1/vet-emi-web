@@ -115,6 +115,20 @@
             gap: 0.4rem;
         }
 
+        .sidebar-menu-section {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.62);
+            font-weight: 800;
+            padding: 0.65rem 0.8rem 0.2rem;
+        }
+
+        .sidebar-menu-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin: 0.35rem 0.4rem;
+        }
+
         .sidebar-menu a {
             display: flex;
             align-items: center;
@@ -179,6 +193,8 @@
 
         html.sidebar-collapsed .sidebar-brand-link span,
         html.sidebar-collapsed .sidebar-menu a span,
+        html.sidebar-collapsed .sidebar-menu-section,
+        html.sidebar-collapsed .sidebar-menu-divider,
         html.sidebar-collapsed .sidebar-user-name,
         html.sidebar-collapsed .logout-text {
             display: none;
@@ -345,20 +361,16 @@
                 </div>
 
                 <ul class="sidebar-menu">
+                    <li class="sidebar-menu-section">General</li>
                     <li>
                         <a href="{{ route('vistas-inicio') }}" class="{{ request()->routeIs('vistas-inicio') ? 'active' : '' }}">
                             <i class="fas fa-house"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    @if(auth()->user()->isAdmin())
-                        <li>
-                            <a href="{{ route('inventario-listar') }}" class="{{ request()->routeIs('inventario-*') ? 'active' : '' }}">
-                                <i class="fas fa-boxes-stacked"></i>
-                                <span>Inventario</span>
-                            </a>
-                        </li>
-                    @endif
+
+                    <li class="sidebar-menu-divider"></li>
+                    <li class="sidebar-menu-section">Operación</li>
                     <li>
                         <a href="{{ route('sales-listar') }}" class="{{ request()->routeIs('sales-*') ? 'active' : '' }}">
                             <i class="fas fa-cash-register"></i>
@@ -371,7 +383,23 @@
                             <span>Consultas</span>
                         </a>
                     </li>
+
                     @if(auth()->user()->isAdmin())
+                        <li>
+                            <a href="{{ route('inventario-listar') }}" class="{{ request()->routeIs('inventario-*') ? 'active' : '' }}">
+                                <i class="fas fa-boxes-stacked"></i>
+                                <span>Inventario</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-divider"></li>
+                        <li class="sidebar-menu-section">Administración</li>
+                        <li>
+                            <a href="{{ route('notificaciones-listar') }}" class="{{ request()->routeIs('notificaciones-*') || request()->routeIs('suscriptores-*') ? 'active' : '' }}">
+                                <i class="fas fa-bullhorn"></i>
+                                <span>Avisos</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ route('employees-listar') }}" class="{{ request()->routeIs('employees-*') ? 'active' : '' }}">
                                 <i class="fas fa-users"></i>

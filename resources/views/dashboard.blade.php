@@ -45,8 +45,8 @@
             <div class="col-12 col-md-6 col-xl-4">
                 <div class="kpi-card kpi-warm h-100">
                     <div class="fw-bold text-uppercase small text-muted">Cobertura</div>
-                    <div class="h4 fw-bold mb-1">4 módulos</div>
-                    <div class="small text-muted">Inventario, POS, Consultas y Empleados</div>
+                    <div class="h4 fw-bold mb-1">5 módulos</div>
+                    <div class="small text-muted">Inventario, POS, Consultas, Empleados y Avisos</div>
                 </div>
             </div>
         @else
@@ -172,6 +172,19 @@
                     </div>
                     <p class="text-muted mb-0">Gestiona el personal de la clínica, documentos y datos de contacto.</p>
                     <a href="{{ route('employees-listar') }}" class="btn btn-sm btn-outline-primary mt-3">Abrir módulo</a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="emi-card bg-white p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 mb-0">Avisos</h2>
+                        <i class="fa-solid fa-bullhorn text-danger fs-4"></i>
+                    </div>
+                    <p class="text-muted mb-0">Crea promociones y avisos importantes, y envíalos por correo a clientes suscritos.</p>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <a href="{{ route('notificaciones-listar') }}" class="btn btn-sm btn-outline-danger">Gestionar avisos</a>
+                        <a href="{{ route('suscriptores-listar') }}" class="btn btn-sm btn-outline-secondary">Suscriptores</a>
+                    </div>
                 </div>
             </div>
         @endif

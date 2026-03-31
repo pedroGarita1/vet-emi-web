@@ -12,6 +12,7 @@ use App\Models\Species;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class VistasController extends Controller
@@ -39,8 +40,17 @@ class VistasController extends Controller
         $salesQuery         = Sale::query()->latest('sold_at');
 
         if (! $isAdmin) {
-            $consultationsQuery->where('user_id', $user->id);
-            $salesQuery->where('user_id', $user->id);
+            if (Schema::hasColumn('consultations', 'user_id')) {
+                $consultationsQuery->where('user_id', $user->id);
+            } else {
+                $consultationsQuery->whereDate('consulted_at', now()->toDateString());
+            }
+
+            if (Schema::hasColumn('sales', 'user_id')) {
+                $salesQuery->where('user_id', $user->id);
+            } else {
+                $salesQuery->whereDate('sold_at', now()->toDateString());
+            }
         }
 
         $consultations = $consultationsQuery->get();
