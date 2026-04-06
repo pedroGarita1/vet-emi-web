@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('consultations-actualizar', $consultation) }}" class="consult-create-shell" id="consultationEditForm-{{ $consultation->id }}">
+                <form method="POST" action="{{ route('consultations-actualizar', $consultation) }}" class="consult-create-shell" id="consultationEditForm-{{ $consultation->id }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="consult-create-grid">
@@ -70,6 +70,54 @@
                                         @endforeach
                                     </datalist>
                                 </div>
+
+                                <div class="col-12">
+                                    <hr class="my-1">
+                                    <label class="form-label fw-semibold mb-2">Control preventivo</label>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="1" id="edit_vaccination_applied_{{ $consultation->id }}" name="vaccination_applied" @checked($consultation->vaccination_applied)>
+                                                <label class="form-check-label" for="edit_vaccination_applied_{{ $consultation->id }}">Se aplico vacuna en esta consulta</label>
+                                            </div>
+                                            <input class="form-control" name="vaccination_note" value="{{ $consultation->vaccination_note }}" placeholder="Vacuna aplicada (ej: Sextuple)">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Proxima vacuna</label>
+                                            <input type="date" class="form-control" name="next_vaccination_at" value="{{ $consultation->next_vaccination_at?->format('Y-m-d') }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="1" id="edit_deworming_applied_{{ $consultation->id }}" name="deworming_applied" @checked($consultation->deworming_applied)>
+                                                <label class="form-check-label" for="edit_deworming_applied_{{ $consultation->id }}">Se aplico desparasitacion en esta consulta</label>
+                                            </div>
+                                            <input class="form-control" name="deworming_note" value="{{ $consultation->deworming_note }}" placeholder="Producto aplicado (ej: Albendazol)">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Proxima desparasitacion</label>
+                                            <input type="date" class="form-control" name="next_deworming_at" value="{{ $consultation->next_deworming_at?->format('Y-m-d') }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Agregar imagenes de la consulta</label>
+                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple>
+                                    <div class="form-text">Las nuevas imagenes se agregan al historial existente.</div>
+                                </div>
+
+                                @if($consultation->images->isNotEmpty())
+                                    <div class="col-12">
+                                        <label class="form-label mb-2">Imagenes guardadas</label>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach($consultation->images as $image)
+                                                <a href="{{ asset($image->image_path) }}" target="_blank" rel="noopener" class="d-inline-block">
+                                                    <img src="{{ asset($image->image_path) }}" alt="Imagen consulta" style="width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid #d9cfe8;">
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </section>
                         <section class="consult-create-card consult-treatment-card">

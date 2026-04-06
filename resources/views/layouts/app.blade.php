@@ -165,6 +165,59 @@
             margin-bottom: 0.85rem;
         }
 
+        .sidebar-user-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .sidebar-user-notifications {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.1);
+            transition: 0.2s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .sidebar-user-notif-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #2a253b;
+            padding: 0 4px;
+        }
+
+        .sidebar-user-notifications:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .sidebar-user-notifications.active {
+            background: linear-gradient(135deg, var(--emi-primary), var(--emi-primary-dark));
+            border-color: rgba(255, 255, 255, 0.32);
+        }
+
         .sidebar-avatar {
             width: 38px;
             height: 38px;
@@ -197,6 +250,14 @@
         html.sidebar-collapsed .sidebar-menu-divider,
         html.sidebar-collapsed .sidebar-user-name,
         html.sidebar-collapsed .logout-text {
+            display: none;
+        }
+
+        html.sidebar-collapsed .sidebar-user-row {
+            justify-content: center;
+        }
+
+        html.sidebar-collapsed .sidebar-user-notifications {
             display: none;
         }
 
@@ -378,6 +439,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('estetica-listar') }}" class="{{ request()->routeIs('estetica-*') ? 'active' : '' }}">
+                            <i class="fas fa-scissors"></i>
+                            <span>Estetica</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('consultations-listar') }}" class="{{ request()->routeIs('consultations-*') ? 'active' : '' }}">
                             <i class="fas fa-stethoscope"></i>
                             <span>Consultas</span>
@@ -395,12 +462,6 @@
                         <li class="sidebar-menu-divider"></li>
                         <li class="sidebar-menu-section">Administración</li>
                         <li>
-                            <a href="{{ route('notificaciones-listar') }}" class="{{ request()->routeIs('notificaciones-*') || request()->routeIs('suscriptores-*') ? 'active' : '' }}">
-                                <i class="fas fa-bullhorn"></i>
-                                <span>Avisos</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="{{ route('employees-listar') }}" class="{{ request()->routeIs('employees-*') ? 'active' : '' }}">
                                 <i class="fas fa-users"></i>
                                 <span>Empleados</span>
@@ -410,9 +471,17 @@
                 </ul>
 
                 <div class="sidebar-footer">
-                    <div class="sidebar-user">
-                        <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
-                        <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
+                    <div class="sidebar-user-row">
+                        <div class="sidebar-user">
+                            <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                            <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
+                        </div>
+                        <a href="{{ route('reminders-listar') }}" class="sidebar-user-notifications {{ request()->routeIs('reminders-*') ? 'active' : '' }}" title="Notificaciones" aria-label="Notificaciones">
+                            <i class="fas fa-bell"></i>
+                            @if(($pendingPreventiveNotifications ?? 0) > 0)
+                                <span class="sidebar-user-notif-badge">{{ ($pendingPreventiveNotifications ?? 0) > 99 ? '99+' : $pendingPreventiveNotifications }}</span>
+                            @endif
+                        </a>
                     </div>
 
                     <form method="POST" action="{{ route('logout') }}">

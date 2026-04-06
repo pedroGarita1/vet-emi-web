@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\ValidateController;
 use App\Http\Controllers\Web\VistasController;
 use App\Http\Controllers\Web\ConsultasController;
+use App\Http\Controllers\Web\EsteticaController;
 use App\Http\Controllers\Web\EmployeeController;
 use App\Http\Controllers\Web\NotificacionController;
 use App\Http\Controllers\Web\SuscriptorCorreoController;
@@ -22,7 +23,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [VistasController::class, 'dashboard'])->name('vistas-inicio');
     Route::get('/sales', [VistasController::class, 'sales'])->name('sales-listar');
+    Route::get('/estetica', [EsteticaController::class, 'index'])->name('estetica-listar');
     Route::get('/consultations', [VistasController::class, 'consultations'])->name('consultations-listar');
+    Route::get('/reminders', [VistasController::class, 'reminderNotifications'])->name('reminders-listar');
+    Route::post('/reminders/{consultation}/{type}/notify-owner', [VistasController::class, 'sendReminderToOwner'])->name('reminders-notify-owner');
+    Route::post('/estetica', [EsteticaController::class, 'store'])->name('estetica-agregar');
+    Route::put('/estetica/{esteticaService}/status', [EsteticaController::class, 'updateStatus'])->name('estetica-estado-actualizar');
+    Route::post('/estetica/{esteticaService}/notify-owner', [EsteticaController::class, 'notifyOwner'])->name('estetica-notificar-dueno');
 
     Route::post('/logout', [ValidateController::class, 'logout'])->name('logout');
 
@@ -34,6 +41,8 @@ Route::middleware('auth')->group(function () {
     // Modularización: lógica de consultas a ConsultasController
     Route::post('/consultations', [ConsultasController::class, 'store'])->name('consultations-agregar');
     Route::put('/consultations/{consultation}', [ConsultasController::class, 'update'])->name('consultations-actualizar');
+    Route::put('/consultations/{consultation}/vaccination-reschedule', [ConsultasController::class, 'rescheduleVaccination'])->name('consultations-vacunacion-reagendar');
+    Route::put('/consultations/{consultation}/deworming-reschedule', [ConsultasController::class, 'rescheduleDeworming'])->name('consultations-desparasitacion-reagendar');
     Route::delete('/consultations/{consultation}', [ConsultasController::class, 'destroy'])->name('consultations-eliminar');
     Route::post('/consultations/{consultation}/images', [ConsultasController::class, 'addImages'])->name('consultations-add-images');
     Route::get('/consultations/{consultation}/edit', [ConsultasController::class, 'edit'])->name('consultations-editar');
@@ -41,6 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/consultations/species', [ValidateController::class, 'storeSpecies'])->name('consultations-especie-agregar');
     Route::post('/consultations/pets', [ValidateController::class, 'storePet'])->name('consultations-mascota-agregar');
+    Route::put('/consultations/pets/{pet}', [ValidateController::class, 'updatePet'])->name('consultations-mascota-actualizar');
     Route::post('/consultations/pricing-rules', [ValidateController::class, 'storeConsultationPricingRule'])->name('consultations-tarifa-agregar');
 
     // Rutas exclusivas para administradores

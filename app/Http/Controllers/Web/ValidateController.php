@@ -314,6 +314,8 @@ class ValidateController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'owner_name' => ['nullable', 'string', 'max:255'],
+            'owner_email' => ['nullable', 'email', 'max:255'],
+            'owner_phone' => ['nullable', 'string', 'max:30'],
             'breed' => ['nullable', 'string', 'max:255'],
             'size_category' => ['nullable', 'string', 'max:50'],
             'species_id' => ['required', 'integer', 'exists:species,id'],
@@ -330,14 +332,47 @@ class ValidateController extends Controller
         Pet::query()->create([
             'name' => $data['name'],
             'owner_name' => $data['owner_name'] ?? null,
+            'owner_email' => $data['owner_email'] ?? null,
+            'owner_phone' => $data['owner_phone'] ?? null,
             'breed' => $data['breed'] ?? null,
             'size_category' => $data['size_category'] ?? null,
             'species_id' => (int) $data['species_id'],
             'is_active' => true,
         ]);
 
-        return redirect()->route('consultations-listar')
-            ->with('success', 'Mascota agregada al catálogo.');
+        return back()->with('success', 'Mascota agregada al catálogo.');
+    }
+
+    public function updatePet(Request $request, Pet $pet): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'owner_name' => ['nullable', 'string', 'max:255'],
+            'owner_email' => ['nullable', 'email', 'max:255'],
+            'owner_phone' => ['nullable', 'string', 'max:30'],
+            'breed' => ['nullable', 'string', 'max:255'],
+            'size_category' => ['nullable', 'string', 'max:50'],
+            'species_id' => ['required', 'integer', 'exists:species,id'],
+        ]);
+
+        $requiresSize = in_array((int) $data['species_id'], [1, 2], true);
+        if ($requiresSize && empty($data['size_category'])) {
+            return back()->withInput()->withErrors([
+                'size_category' => 'Selecciona talla pequeña, mediana o grande.',
+            ]);
+        }
+
+        $pet->update([
+            'name' => $data['name'],
+            'owner_name' => $data['owner_name'] ?? null,
+            'owner_email' => $data['owner_email'] ?? null,
+            'owner_phone' => $data['owner_phone'] ?? null,
+            'breed' => $data['breed'] ?? null,
+            'size_category' => $data['size_category'] ?? null,
+            'species_id' => (int) $data['species_id'],
+        ]);
+
+        return back()->with('success', 'Mascota y datos del dueño actualizados.');
     }
 
     public function storeConsultationPricingRule(Request $request): RedirectResponse

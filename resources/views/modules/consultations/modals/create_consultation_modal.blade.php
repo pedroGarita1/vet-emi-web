@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('consultations-agregar') }}" class="consult-create-shell" id="consultationForm">
+                <form method="POST" action="{{ route('consultations-agregar') }}" class="consult-create-shell" id="consultationForm" enctype="multipart/form-data">
                     @csrf
                     <div class="consult-create-grid">
                         <section class="consult-create-card consult-create-card-soft">
@@ -67,6 +67,41 @@
                                             <option value="{{ $diagnosis }}"></option>
                                         @endforeach
                                     </datalist>
+                                </div>
+
+                                <div class="col-12">
+                                    <hr class="my-1">
+                                    <label class="form-label fw-semibold mb-2">Control preventivo</label>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="1" id="new_vaccination_applied" name="vaccination_applied">
+                                                <label class="form-check-label" for="new_vaccination_applied">Se aplico vacuna en esta consulta</label>
+                                            </div>
+                                            <input class="form-control" name="vaccination_note" placeholder="Vacuna aplicada (ej: Sextuple)">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Proxima vacuna</label>
+                                            <input type="date" class="form-control" name="next_vaccination_at">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="1" id="new_deworming_applied" name="deworming_applied">
+                                                <label class="form-check-label" for="new_deworming_applied">Se aplico desparasitacion en esta consulta</label>
+                                            </div>
+                                            <input class="form-control" name="deworming_note" placeholder="Producto aplicado (ej: Albendazol)">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Proxima desparasitacion</label>
+                                            <input type="date" class="form-control" name="next_deworming_at">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Imagenes de la consulta</label>
+                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple>
+                                    <div class="form-text">Puedes seleccionar varias imagenes (maximo 5MB por archivo).</div>
                                 </div>
                             </div>
                         </section>

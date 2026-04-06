@@ -30,6 +30,12 @@ class ConsultasController extends Controller
             'treatment' => ['nullable', 'string'],
             'cost' => ['nullable', 'numeric', 'min:0'],
             'consulted_at' => ['required', 'date'],
+            'vaccination_applied' => ['nullable', 'boolean'],
+            'vaccination_note' => ['nullable', 'string', 'max:255'],
+            'next_vaccination_at' => ['nullable', 'date'],
+            'deworming_applied' => ['nullable', 'boolean'],
+            'deworming_note' => ['nullable', 'string', 'max:255'],
+            'next_deworming_at' => ['nullable', 'date'],
             'medications' => ['nullable', 'array'],
             'medications.*.inventory_item_id' => ['nullable', 'integer', 'exists:inventory_items,id'],
             'medications.*.quantity' => ['nullable', 'integer', 'min:1'],
@@ -39,6 +45,8 @@ class ConsultasController extends Controller
             'medications.*.frequency_days' => ['nullable', 'integer', 'min:1'],
             'medications.*.duration_days' => ['nullable', 'integer', 'min:1'],
             'medications.*.administration_notes' => ['nullable', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'image', 'max:5120'],
         ]);
 
         $species = Species::findOrFail((int) $data['species_id']);
@@ -47,10 +55,13 @@ class ConsultasController extends Controller
         $data['pet_name'] = $pet->name;
         $data['owner_name'] = $data['owner_name'] ?: ($pet->owner_name ?: 'Sin propietario');
         $data['cost'] = $this->resolveConsultationCost((int) $data['species_id'], $data['diagnosis'], $data['cost'] ?? null);
+        $data['vaccination_applied'] = $request->boolean('vaccination_applied');
+        $data['deworming_applied'] = $request->boolean('deworming_applied');
 
         DB::transaction(function () use ($data, $request) {
             $consultation = Consultation::create($data);
             $this->syncConsultationItems($request, $consultation, false);
+            $this->storeConsultationImages($request, $consultation);
         });
 
         return redirect()->route('consultations-listar')->with('success', 'Consulta registrada.');
@@ -66,6 +77,12 @@ class ConsultasController extends Controller
             'treatment' => ['nullable', 'string'],
             'cost' => ['nullable', 'numeric', 'min:0'],
             'consulted_at' => ['required', 'date'],
+            'vaccination_applied' => ['nullable', 'boolean'],
+            'vaccination_note' => ['nullable', 'string', 'max:255'],
+            'next_vaccination_at' => ['nullable', 'date'],
+            'deworming_applied' => ['nullable', 'boolean'],
+            'deworming_note' => ['nullable', 'string', 'max:255'],
+            'next_deworming_at' => ['nullable', 'date'],
             'medications' => ['nullable', 'array'],
             'medications.*.inventory_item_id' => ['nullable', 'integer', 'exists:inventory_items,id'],
             'medications.*.quantity' => ['nullable', 'integer', 'min:1'],
@@ -75,6 +92,8 @@ class ConsultasController extends Controller
             'medications.*.frequency_days' => ['nullable', 'integer', 'min:1'],
             'medications.*.duration_days' => ['nullable', 'integer', 'min:1'],
             'medications.*.administration_notes' => ['nullable', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'image', 'max:5120'],
         ]);
 
         $species = Species::findOrFail((int) $data['species_id']);
@@ -83,12 +102,15 @@ class ConsultasController extends Controller
         $data['pet_name'] = $pet->name;
         $data['owner_name'] = $data['owner_name'] ?: ($pet->owner_name ?: 'Sin propietario');
         $data['cost'] = $this->resolveConsultationCost((int) $data['species_id'], $data['diagnosis'], $data['cost'] ?? null);
+        $data['vaccination_applied'] = $request->boolean('vaccination_applied');
+        $data['deworming_applied'] = $request->boolean('deworming_applied');
 
         DB::transaction(function () use ($consultation, $data, $request) {
             $consultation->update($data);
             if ($request->has('medications')) {
                 $this->syncConsultationItems($request, $consultation, true);
             }
+            $this->storeConsultationImages($request, $consultation);
         });
 
         return redirect()->route('consultations-listar')->with('success', 'Consulta actualizada.');
@@ -101,6 +123,36 @@ class ConsultasController extends Controller
             $consultation->delete();
         });
         return redirect()->route('consultations-listar')->with('success', 'Consulta eliminada.');
+    }
+
+    public function rescheduleDeworming(Request $request, Consultation $consultation): RedirectResponse
+    {
+        $data = $request->validate([
+            'next_deworming_at' => ['required', 'date'],
+            'deworming_note' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $consultation->update([
+            'next_deworming_at' => $data['next_deworming_at'],
+            'deworming_note' => $data['deworming_note'] ?? $consultation->deworming_note,
+        ]);
+
+        return redirect()->route('consultations-listar')->with('success', 'Desparasitacion reagendada correctamente.');
+    }
+
+    public function rescheduleVaccination(Request $request, Consultation $consultation): RedirectResponse
+    {
+        $data = $request->validate([
+            'next_vaccination_at' => ['required', 'date'],
+            'vaccination_note' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $consultation->update([
+            'next_vaccination_at' => $data['next_vaccination_at'],
+            'vaccination_note' => $data['vaccination_note'] ?? $consultation->vaccination_note,
+        ]);
+
+        return redirect()->route('consultations-listar')->with('success', 'Vacunacion reagendada correctamente.');
     }
 
     public function addImages(Request $request, Consultation $consultation): RedirectResponse
@@ -143,6 +195,8 @@ class ConsultasController extends Controller
                 'id' => $pet->id,
                 'name' => $pet->name,
                 'owner_name' => $pet->owner_name,
+                'owner_email' => $pet->owner_email,
+                'owner_phone' => $pet->owner_phone,
                 'breed' => $pet->breed,
                 'size_category' => $pet->size_category,
                 'species_id' => $pet->species_id,
@@ -246,6 +300,19 @@ class ConsultasController extends Controller
                 Sale::where('id', $item->sale_id)->delete();
             }
             $item->delete();
+        }
+    }
+
+    private function storeConsultationImages(Request $request, Consultation $consultation): void
+    {
+        foreach ($request->file('images', []) as $image) {
+            $path = $image->store('public/consultations');
+            $relativePath = str_replace('public/', 'storage/', $path);
+
+            ConsultationImage::query()->create([
+                'consultation_id' => $consultation->id,
+                'image_path' => $relativePath,
+            ]);
         }
     }
 }

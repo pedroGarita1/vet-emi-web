@@ -16,6 +16,14 @@
                         <label class="form-label d-inline-flex align-items-center gap-2"><i class="fa-solid fa-user text-muted"></i><span>Propietario</span></label>
                         <input class="form-control" name="owner_name">
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label d-inline-flex align-items-center gap-2"><i class="fa-solid fa-envelope text-muted"></i><span>Correo del dueño</span></label>
+                        <input type="email" class="form-control" name="owner_email" placeholder="dueno@correo.com">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label d-inline-flex align-items-center gap-2"><i class="fa-solid fa-phone text-muted"></i><span>Teléfono del dueño</span></label>
+                        <input class="form-control" name="owner_phone" placeholder="+506 8888-8888">
+                    </div>
                     <div class="col-12">
                         <label class="form-label d-inline-flex align-items-center gap-2"><i class="fa-solid fa-dna text-muted"></i><span>Especie</span></label>
                         <select class="form-select" id="pet_species_id_modal" name="species_id" required>

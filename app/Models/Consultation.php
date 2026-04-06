@@ -20,12 +20,22 @@ class Consultation extends Model
         'treatment',
         'cost',
         'consulted_at',
+        'vaccination_applied',
+        'vaccination_note',
+        'next_vaccination_at',
+        'deworming_applied',
+        'deworming_note',
+        'next_deworming_at',
     ];
 
     protected function casts(): array
     {
         return [
             'consulted_at' => 'datetime',
+            'vaccination_applied' => 'boolean',
+            'deworming_applied' => 'boolean',
+            'next_vaccination_at' => 'date',
+            'next_deworming_at' => 'date',
         ];
     }
 

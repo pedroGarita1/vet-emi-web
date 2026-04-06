@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Consultation;
 use App\Models\InventoryItem;
+use App\Models\Role;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -19,11 +20,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleSeeder::class);
+        $adminRoleId = Role::query()->where('name', 'administrador')->value('id');
+
         User::query()->updateOrCreate(
             ['email' => 'demo@emi.com'],
             [
                 'name' => 'Usuario Demo Emi',
                 'password' => Hash::make('admin1234'),
+                'role_id' => $adminRoleId,
             ]
         );
 
@@ -92,6 +97,5 @@ class DatabaseSeeder extends Seeder
                 'consulted_at' => now()->subDay(),
             ]
         );
-        $this->call(RoleSeeder::class);
     }
 }

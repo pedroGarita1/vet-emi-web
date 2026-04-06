@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'driver' => env('WHATSAPP_DRIVER', 'custom'),
+        'endpoint' => env('WHATSAPP_API_ENDPOINT'),
+        'token' => env('WHATSAPP_API_TOKEN'),
+        'meta' => [
+            'token' => env('WHATSAPP_META_TOKEN', env('WHATSAPP_API_TOKEN')),
+            'phone_number_id' => env('WHATSAPP_META_PHONE_NUMBER_ID'),
+            'api_version' => env('WHATSAPP_META_API_VERSION', 'v22.0'),
+            'test_to' => env('WHATSAPP_META_TEST_TO'),
+        ],
+    ],
+
 ];
