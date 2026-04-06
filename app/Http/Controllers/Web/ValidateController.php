@@ -9,6 +9,7 @@ use App\Models\ConsultationPricingRule;
 use App\Models\InventoryItem;
 use App\Models\Pet;
 use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Models\Species;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -146,71 +147,56 @@ class ValidateController extends Controller
     public function storeSale(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'inventory_item_id' => ['nullable', 'integer', 'exists:inventory_items,id'],
-            'product_name' => ['nullable', 'string', 'max:255'],
-            'quantity' => ['required', 'integer', 'min:1'],
-            'unit_price' => ['nullable', 'numeric', 'min:0'],
             'customer_name' => ['nullable', 'string', 'max:255'],
-            'sold_at' => ['required', 'date'],
+            'sold_at'       => ['required', 'date'],
+            'items_json'    => ['required', 'string'],
         ]);
 
-        $inventoryItem = null;
-        if (! empty($data['inventory_item_id'])) {
-            $inventoryItem = InventoryItem::query()->find((int) $data['inventory_item_id']);
-        }
+        $rawItems = json_decode($data['items_json'], true);
 
-        if (empty($data['product_name']) && $inventoryItem) {
-            $data['product_name'] = trim($inventoryItem->name.' '.((string) $inventoryItem->presentation));
-        }
-
-        if (($data['unit_price'] === null || $data['unit_price'] === '') && $inventoryItem) {
-            $data['unit_price'] = (float) $inventoryItem->unit_price;
-        }
-
-        if (empty($data['product_name']) || $data['unit_price'] === null || $data['unit_price'] === '') {
+        if (! is_array($rawItems) || count($rawItems) === 0) {
             return back()->withInput()->withErrors([
-                'product_name' => 'Selecciona un producto de inventario o captura nombre y precio.',
+                'items_json' => 'Agrega al menos un artículo al carrito antes de registrar.',
             ]);
         }
 
-        $data['total'] = (float) $data['quantity'] * (float) $data['unit_price'];
+        $total = 0.0;
+        $saleItemsData = [];
 
-        Sale::query()->create($data);
+        foreach ($rawItems as $item) {
+            $qty      = max(1, (int) ($item['quantity'] ?? 1));
+            $price    = max(0.0, (float) ($item['unit_price'] ?? 0));
+            $subtotal = $qty * $price;
+            $total   += $subtotal;
 
-        return redirect()->route('sales-listar')->with('success', 'Venta registrada.');
+            $saleItemsData[] = [
+                'inventory_item_id' => ! empty($item['inventory_item_id']) ? (int) $item['inventory_item_id'] : null,
+                'product_name'      => strip_tags((string) ($item['product_name'] ?? 'Artículo')),
+                'quantity'          => $qty,
+                'unit_price'        => $price,
+                'subtotal'          => $subtotal,
+            ];
+        }
+
+        $sale = Sale::query()->create([
+            'customer_name' => $data['customer_name'] ?? null,
+            'sold_at'       => $data['sold_at'],
+            'total'         => $total,
+        ]);
+
+        foreach ($saleItemsData as $itemData) {
+            $sale->items()->create($itemData);
+        }
+
+        return redirect()->route('sales-listar')->with('success', 'Venta registrada con ' . count($saleItemsData) . ' artículo(s). Total: $' . number_format($total, 2));
     }
 
     public function updateSale(Request $request, Sale $sale): RedirectResponse
     {
         $data = $request->validate([
-            'inventory_item_id' => ['nullable', 'integer', 'exists:inventory_items,id'],
-            'product_name' => ['nullable', 'string', 'max:255'],
-            'quantity' => ['required', 'integer', 'min:1'],
-            'unit_price' => ['nullable', 'numeric', 'min:0'],
             'customer_name' => ['nullable', 'string', 'max:255'],
-            'sold_at' => ['required', 'date'],
+            'sold_at'       => ['required', 'date'],
         ]);
-
-        $inventoryItem = null;
-        if (! empty($data['inventory_item_id'])) {
-            $inventoryItem = InventoryItem::query()->find((int) $data['inventory_item_id']);
-        }
-
-        if (empty($data['product_name']) && $inventoryItem) {
-            $data['product_name'] = trim($inventoryItem->name.' '.((string) $inventoryItem->presentation));
-        }
-
-        if (($data['unit_price'] === null || $data['unit_price'] === '') && $inventoryItem) {
-            $data['unit_price'] = (float) $inventoryItem->unit_price;
-        }
-
-        if (empty($data['product_name']) || $data['unit_price'] === null || $data['unit_price'] === '') {
-            return back()->withInput()->withErrors([
-                'product_name' => 'Selecciona un producto de inventario o captura nombre y precio.',
-            ]);
-        }
-
-        $data['total'] = (float) $data['quantity'] * (float) $data['unit_price'];
 
         $sale->update($data);
 

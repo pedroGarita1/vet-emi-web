@@ -100,7 +100,7 @@ class VistasController extends Controller
         })->values();
 
         return view('modules.sales.index', [
-            'sales' => Sale::query()->latest('sold_at')->get(),
+            'sales' => Sale::query()->with('items')->latest('sold_at')->get(),
             'items' => $items,
             'itemsJson' => $itemsJson,
             'speciesCatalog' => Species::query()->where('is_active', true)->orderBy('name')->get(),

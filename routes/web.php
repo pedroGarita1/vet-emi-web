@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/consultations/pricing-rules', [ValidateController::class, 'storeConsultationPricingRule'])->name('consultations-tarifa-agregar');
 
     // Rutas exclusivas para administradores
-    Route::middleware('role:admin')->group(function () {
+    Route::middleware('role:administrador')->group(function () {
         Route::get('/inventory-items', [VistasController::class, 'inventory'])->name('inventario-listar');
         Route::post('/inventory-items', [ValidateController::class, 'storeInventory'])->name('inventario-agregar');
         Route::put('/inventory-items/{inventoryItem}', [ValidateController::class, 'updateInventory'])->name('inventario-actualizar');
