@@ -9,6 +9,7 @@ use App\Models\SuscriptorCorreo;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -78,7 +79,13 @@ class NotificacionController extends Controller
         ]);
 
         if ($request->boolean('enviar_ahora')) {
-            $this->enviarNotificacionAClientes($notificacion);
+            $enviados = $this->enviarNotificacionAClientes($notificacion);
+
+            if ($enviados === 0) {
+                return redirect()
+                    ->route('notificaciones-listar')
+                    ->with('error', 'Aviso creado, pero no se enviaron correos. Revisa MAIL_MAILER y credenciales SMTP en .env.');
+            }
         }
 
         return redirect()
@@ -160,6 +167,12 @@ class NotificacionController extends Controller
     {
         $enviados = $this->enviarNotificacionAClientes($notificacion);
 
+        if ($enviados === 0) {
+            return redirect()
+                ->route('notificaciones-listar')
+                ->with('error', 'No se pudieron enviar correos. Verifica MAIL_MAILER y credenciales SMTP en .env.');
+        }
+
         return redirect()
             ->route('notificaciones-listar')
             ->with('success', "Aviso enviado a {$enviados} cliente(s) por correo.");
@@ -170,6 +183,10 @@ class NotificacionController extends Controller
      */
     private function enviarNotificacionAClientes(Notificacion $notificacion): int
     {
+        if (! $this->mailCanDeliver()) {
+            return 0;
+        }
+
         $suscriptores = SuscriptorCorreo::suscritosActivos($notificacion->tipo)->get();
         $enviados = 0;
 
@@ -183,13 +200,18 @@ class NotificacionController extends Controller
                     ->send(new EnviarAvisoPorCorreo($notificacion, $nombreCliente));
                 $enviados++;
             } catch (\Exception $e) {
-                \Log::error("Error enviando correo a {$suscriptor->correo}: " . $e->getMessage());
+                Log::error("Error enviando correo a {$suscriptor->correo}: " . $e->getMessage());
             }
         }
 
         $notificacion->marcarEnviada($enviados);
 
         return $enviados;
+    }
+
+    private function mailCanDeliver(): bool
+    {
+        return !in_array((string) config('mail.default'), ['log', 'array'], true);
     }
 
     /**

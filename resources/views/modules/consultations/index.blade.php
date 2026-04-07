@@ -721,8 +721,8 @@
                                             @if($consultation->images->isNotEmpty())
                                                 <div class="d-flex flex-wrap gap-1">
                                                     @foreach($consultation->images->take(3) as $image)
-                                                        <a href="{{ asset($image->image_path) }}" target="_blank" rel="noopener" class="d-inline-block">
-                                                            <img src="{{ asset($image->image_path) }}" alt="Imagen consulta" style="width: 38px; height: 38px; object-fit: cover; border-radius: 8px; border: 1px solid #d9cfe8;">
+                                                        <a href="{{ route('consultations-imagen-ver', $image) }}" target="_blank" rel="noopener" class="d-inline-block">
+                                                            <img src="{{ route('consultations-imagen-ver', $image) }}" alt="Imagen consulta" style="width: 38px; height: 38px; object-fit: cover; border-radius: 8px; border: 1px solid #d9cfe8;">
                                                         </a>
                                                     @endforeach
                                                 </div>

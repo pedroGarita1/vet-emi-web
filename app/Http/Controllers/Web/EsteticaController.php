@@ -12,7 +12,9 @@ use App\Support\WhatsappGateway;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class EsteticaController extends Controller
@@ -105,9 +107,17 @@ class EsteticaController extends Controller
         $sentChannels = [];
 
         $email = trim((string) ($esteticaService->owner_email ?? ''));
-        if ($email !== '') {
-            Mail::to($email)->send(new MascotaListaCorreo($esteticaService));
-            $sentChannels[] = 'correo';
+        if ($email !== '' && $this->mailCanDeliver()) {
+            try {
+                Mail::to($email)->send(new MascotaListaCorreo($esteticaService));
+                $sentChannels[] = 'correo';
+            } catch (\Throwable $e) {
+                Log::error('Error enviando correo de estetica.', [
+                    'service_id' => $esteticaService->id,
+                    'email' => $email,
+                    'message' => $e->getMessage(),
+                ]);
+            }
         }
 
         $phone = trim((string) ($esteticaService->owner_phone ?? ''));
@@ -117,7 +127,7 @@ class EsteticaController extends Controller
         }
 
         if (empty($sentChannels)) {
-            return redirect()->route('estetica-listar')->with('error', 'No se pudo enviar aviso: falta correo/teléfono o configuración de WhatsApp.');
+            return redirect()->route('estetica-listar')->with('error', 'No se pudo enviar aviso: revisa configuración de correo (MAIL_MAILER/SMTP) o WhatsApp.');
         }
 
         $esteticaService->update([
@@ -127,5 +137,21 @@ class EsteticaController extends Controller
         ]);
 
         return redirect()->route('estetica-listar')->with('success', 'Aviso enviado por '.implode(' y ', $sentChannels).'.');
+    }
+
+    public function showImage(EsteticaServiceImage $image)
+    {
+        $path = str_replace('storage/', '', (string) $image->image_path);
+
+        if ($path === '' || !Storage::disk('public')->exists($path)) {
+            abort(404);
+        }
+
+        return response()->file(Storage::disk('public')->path($path));
+    }
+
+    private function mailCanDeliver(): bool
+    {
+        return !in_array((string) config('mail.default'), ['log', 'array'], true);
     }
 }

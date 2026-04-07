@@ -375,8 +375,8 @@
                                     @if($service->images->isNotEmpty())
                                         <div class="d-flex flex-wrap gap-1">
                                             @foreach($service->images->take(3) as $image)
-                                                <a href="{{ asset($image->image_path) }}" target="_blank" rel="noopener" class="d-inline-block">
-                                                    <img src="{{ asset($image->image_path) }}" alt="Imagen servicio" style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid #d9cfe8;">
+                                                <a href="{{ route('estetica-imagen-ver', $image) }}" target="_blank" rel="noopener" class="d-inline-block">
+                                                    <img src="{{ route('estetica-imagen-ver', $image) }}" alt="Imagen servicio" style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid #d9cfe8;">
                                                 </a>
                                             @endforeach
                                         </div>

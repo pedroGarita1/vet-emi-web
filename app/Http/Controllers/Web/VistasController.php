@@ -441,11 +441,15 @@ class VistasController extends Controller
         $sentChannels = [];
 
         $email = trim((string) ($pet->owner_email ?? ''));
-        if ($email !== '') {
-            Mail::raw($message, function ($mail) use ($email, $label): void {
-                $mail->to($email)->subject('Recordatorio de '.$label.' - Emi Veterinaria');
-            });
-            $sentChannels[] = 'correo';
+        if ($email !== '' && $this->mailCanDeliver()) {
+            try {
+                Mail::raw($message, function ($mail) use ($email, $label): void {
+                    $mail->to($email)->subject('Recordatorio de '.$label.' - Emi Veterinaria');
+                });
+                $sentChannels[] = 'correo';
+            } catch (\Throwable) {
+                // Si falla SMTP, se intenta aún por WhatsApp.
+            }
         }
 
         $phone = trim((string) ($pet->owner_phone ?? ''));
@@ -455,9 +459,14 @@ class VistasController extends Controller
         }
 
         if (empty($sentChannels)) {
-            return back()->with('error', 'No se pudo enviar: falta correo/teléfono o configuración de WhatsApp.');
+            return back()->with('error', 'No se pudo enviar: revisa configuración de correo (MAIL_MAILER/SMTP) o WhatsApp.');
         }
 
         return back()->with('success', 'Aviso enviado por '.implode(' y ', $sentChannels).'.');
+    }
+
+    private function mailCanDeliver(): bool
+    {
+        return !in_array((string) config('mail.default'), ['log', 'array'], true);
     }
 }

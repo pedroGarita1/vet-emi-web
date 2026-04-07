@@ -1,4 +1,20 @@
 
+## Despliegue en Hostinger
+
+La guia completa esta en [docs/HOSTINGER_DEPLOY.md](docs/HOSTINGER_DEPLOY.md).
+
+Si no tienes SSH, usa [public/hostinger-deploy.php](public/hostinger-deploy.php) junto con `DEPLOY_WEB_ENABLED=true` y `DEPLOY_WEB_TOKEN` en tu `.env` para ejecutar el primer despliegue desde navegador.
+
+Preparacion local obligatoria antes de comprimir el ZIP:
+
+```bash
+composer install --no-dev --optimize-autoloader
+npm ci
+npm run build
+```
+
+Usa [\.env.hostinger.example](.env.hostinger.example) como plantilla de produccion.
+
 ## Migraciones y seeders
 
 Ejecuta:

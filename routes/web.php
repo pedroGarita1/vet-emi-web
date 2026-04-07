@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/estetica', [EsteticaController::class, 'store'])->name('estetica-agregar');
     Route::put('/estetica/{esteticaService}/status', [EsteticaController::class, 'updateStatus'])->name('estetica-estado-actualizar');
     Route::post('/estetica/{esteticaService}/notify-owner', [EsteticaController::class, 'notifyOwner'])->name('estetica-notificar-dueno');
+    Route::get('/estetica/images/{image}', [EsteticaController::class, 'showImage'])->name('estetica-imagen-ver');
 
     Route::post('/logout', [ValidateController::class, 'logout'])->name('logout');
 
@@ -45,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/consultations/{consultation}/deworming-reschedule', [ConsultasController::class, 'rescheduleDeworming'])->name('consultations-desparasitacion-reagendar');
     Route::delete('/consultations/{consultation}', [ConsultasController::class, 'destroy'])->name('consultations-eliminar');
     Route::post('/consultations/{consultation}/images', [ConsultasController::class, 'addImages'])->name('consultations-add-images');
+    Route::get('/consultations/images/{image}', [ConsultasController::class, 'showImage'])->name('consultations-imagen-ver');
     Route::get('/consultations/{consultation}/edit', [ConsultasController::class, 'edit'])->name('consultations-editar');
     Route::get('/consultations/{consultation}/prescription-pdf', [ValidateController::class, 'downloadConsultationPrescriptionPdf'])->name('consultations-receta-pdf');
 

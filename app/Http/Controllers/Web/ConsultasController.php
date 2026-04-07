@@ -315,4 +315,15 @@ class ConsultasController extends Controller
             ]);
         }
     }
+
+    public function showImage(ConsultationImage $image)
+    {
+        $path = str_replace('storage/', '', (string) $image->image_path);
+
+        if ($path === '' || !Storage::disk('public')->exists($path)) {
+            abort(404);
+        }
+
+        return response()->file(Storage::disk('public')->path($path));
+    }
 }

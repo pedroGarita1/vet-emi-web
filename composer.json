@@ -50,6 +50,13 @@
             "@php artisan config:clear --ansi",
             "@php artisan test"
         ],
+        "deploy:hostinger": [
+            "@php artisan optimize:clear --ansi",
+            "@php artisan migrate --force --ansi",
+            "@php artisan storage:unlink --ansi",
+            "@php artisan storage:link --force --ansi",
+            "@php artisan optimize --ansi"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

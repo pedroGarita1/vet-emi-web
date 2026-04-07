@@ -18,6 +18,7 @@
                     <span class="emi-badge"><i class="fa-solid fa-boxes-stacked me-1"></i> Inventario</span>
                 @endif
                 <span class="emi-badge"><i class="fa-solid fa-cash-register me-1"></i> POS</span>
+                <span class="emi-badge"><i class="fa-solid fa-scissors me-1"></i> Estetica</span>
                 <span class="emi-badge"><i class="fa-solid fa-stethoscope me-1"></i> Consultas</span>
                 @if($isAdmin)
                     <span class="emi-badge"><i class="fa-solid fa-users me-1"></i> Empleados</span>
@@ -45,8 +46,8 @@
             <div class="col-12 col-md-6 col-xl-4">
                 <div class="kpi-card kpi-warm h-100">
                     <div class="fw-bold text-uppercase small text-muted">Cobertura</div>
-                    <div class="h4 fw-bold mb-1">5 módulos</div>
-                    <div class="small text-muted">Inventario, POS, Consultas, Empleados y Avisos</div>
+                    <div class="h4 fw-bold mb-1">6 módulos</div>
+                    <div class="small text-muted">Inventario, POS, Estetica, Consultas, Empleados y Avisos</div>
                 </div>
             </div>
         @else
@@ -58,7 +59,7 @@
                         </div>
                         <div>
                             <div class="fw-bold" style="color:var(--emi-dark)">Bienvenido, {{ $user->name }}</div>
-                            <div class="small text-muted">Tienes acceso a Consultas y Punto de Venta</div>
+                            <div class="small text-muted">Tienes acceso a Punto de Venta, Estetica y Consultas</div>
                         </div>
                     </div>
                 </div>
@@ -161,6 +162,16 @@
                 </div>
                 <p class="text-muted mb-0">Historial de pacientes, agenda de consultas y seguimiento de tratamientos.</p>
                 <a href="{{ route('consultations-listar') }}" class="btn btn-sm btn-outline-primary mt-3">Abrir modulo</a>
+            </div>
+        </div>
+        <div class="{{ $isAdmin ? 'col-12 col-md-6 col-xl-3' : 'col-12 col-md-6' }}">
+            <div class="emi-card bg-white p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 mb-0">Estetica</h2>
+                    <i class="fa-solid fa-scissors text-secondary fs-4"></i>
+                </div>
+                <p class="text-muted mb-0">Registro de servicios estéticos, control de estado y aviso al dueño.</p>
+                <a href="{{ route('estetica-listar') }}" class="btn btn-sm btn-outline-secondary mt-3">Abrir modulo</a>
             </div>
         </div>
         @if($isAdmin)
